@@ -1,5 +1,5 @@
 # This is NumRepper. It's designed by moi, Insung Youn!
-# I designed this 
+# I designed this
 
 # All inputs for converter methods are string-formatted number representation.
 # Dictionary for hexadecimal conversion
@@ -78,55 +78,55 @@ allowed_dig_hexadecimal = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a'
 
 # Main
 print("Welcome to Insung's NumRepper!")
+while True:
+    start_base = input("Please enter desired starting base for conversion(decimal, binary, octal, hexadecimal)\n")
+    while start_base not in ['decimal', 'binary', 'octal', 'hexadecimal']:
+        start_base = input("Not a valid base. Please enter base.\n")
 
-start_base = input("Please enter desired starting base for conversion(decimal, binary, octal, hexadecimal)\n")
-while start_base not in ['decimal', 'binary', 'octal', 'hexadecimal']:
-    start_base = input("Not a valid base. Please enter base.\n")
-
-start_num = input("Please enter desired starting number (in base {})\n".format(start_base))
-start_num = start_num.lower()
+    start_num = input("Please enter desired starting number (in base {})\n".format(start_base))
+    start_num = start_num.lower()
 
 
-def validation(sn: str):
-    count = 0
-    for ch in sn:
-        if ch not in eval('allowed_dig_' + '{}'.format(start_base)):
-            count += 1
+    def validation(sn: str):
+        count = 0
+        for ch in sn:
+            if ch not in eval('allowed_dig_' + '{}'.format(start_base)):
+                count += 1
+            else:
+                pass
+        return count == 0
+
+
+    while not validation(start_num):
+        start_num = input(f"Not a valid {start_base} number. Please enter number again.\n")
+
+    result_base = input("Please enter desired resulting base for conversion(decimal, binary, octal, hexadecimal)\n")
+    while result_base not in ['decimal', 'binary', 'octal', 'hexadecimal']:
+        result_base = input("Not a valid base. Please enter base.\n")
+
+
+    def main_converter(sb: str, sn: str, rb: str):
+        if sb == rb:
+            return sn
         else:
-            pass
-    return count == 0
+            if sb != 'decimal' and rb != 'decimal':
+                if sb == 'binary':
+                    if rb == 'octal':
+                        return decimal_to_octal(binary_to_decimal(sn))
+                    elif rb == 'hexadecimal':
+                        return decimal_to_hexadecimal(binary_to_decimal(sn))
+                elif sb == 'octal':
+                    if rb == 'binary':
+                        return decimal_to_binary(octal_to_decimal(sn))
+                    elif rb == 'hexadecimal':
+                        return decimal_to_hexadecimal(octal_to_decimal(sn))
+                elif sb == 'hexadecimal':
+                    if rb == 'binary':
+                        return decimal_to_binary(hexadecimal_to_decimal(sn))
+                    elif rb == 'octal':
+                        return decimal_to_octal(hexadecimal_to_decimal(sn))
+            else:
+                return eval(start_base + '_to_' + result_base + '({})'.format(start_num))
 
 
-while not validation(start_num):
-    start_num = input(f"Not a valid {start_base} number. Please enter number again.\n")
-
-result_base = input("Please enter desired resulting base for conversion(decimal, binary, octal, hexadecimal)\n")
-while result_base not in ['decimal', 'binary', 'octal', 'hexadecimal']:
-    result_base = input("Not a valid base. Please enter base.\n")
-
-
-def main_converter(sb: str, sn: str, rb: str):
-    if sb == rb:
-        return sn
-    else:
-        if sb != 'decimal' and rb != 'decimal':
-            if sb == 'binary':
-                if rb == 'octal':
-                    return decimal_to_octal(binary_to_decimal(sn))
-                elif rb == 'hexadecimal':
-                    return decimal_to_hexadecimal(binary_to_decimal(sn))
-            elif sb == 'octal':
-                if rb == 'binary':
-                    return decimal_to_binary(octal_to_decimal(sn))
-                elif rb == 'hexadecimal':
-                    return decimal_to_hexadecimal(octal_to_decimal(sn))
-            elif sb == 'hexadecimal':
-                if rb == 'binary':
-                    return decimal_to_binary(hexadecimal_to_decimal(sn))
-                elif rb == 'octal':
-                    return decimal_to_octal(hexadecimal_to_decimal(sn))
-        else:
-            return eval(start_base + '_to_' + result_base + '({})'.format(start_num))
-
-
-print(f"{start_base} number {start_num} in {result_base} is {main_converter(start_base, start_num, result_base)}")
+    print(f"{start_base} number {start_num} in {result_base} is {main_converter(start_base, start_num, result_base)}")
